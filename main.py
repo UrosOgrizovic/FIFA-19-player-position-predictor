@@ -14,8 +14,8 @@ import seaborn as sns
 
 import os
 
-
 # Any results you write to the current directory are saved as output.
+
 data = pd.read_csv('input/data.csv')
 # number of positions = 27
 # ?GK column is excluded so as to avoid the dummy variable trap?
@@ -201,8 +201,12 @@ model.compile(optimizer=adam,  # Good default optimizer to start with
               # how will we calculate our "error." Neural network aims to minimize loss.
               metrics=['accuracy'])  # what to track
 
+section_ints = [section.argmax() for section in sections_train]
+# treat 1 instance of an attacker/goalkeeper as 2 instances of a midfielder/defender
+class_weights = {0: 1., 1: 2, 2: 2, 3: 1.}
+
 #model.fit(x_train, y_train, epochs=3, batch_size=100)  # train the model
-model.fit(x_train, sections_train, epochs=3, batch_size=100)  # train the model
+model.fit(x_train, sections_train, epochs=100, batch_size=100, class_weight=class_weights)  # train the model
 
 #val_loss, val_acc = model.evaluate(x_test, y_test)  # evaluate the out of sample data with model
 val_loss, val_acc = model.evaluate(x_test, sections_test)  # evaluate the out of sample data with model
@@ -213,6 +217,6 @@ predictions = model.predict(x_test)
 for i in range(len(predictions)):
     predicted_index = np.argmax(predictions[i])
     actual_index = np.argmax(sections_test[i])
-    # print("Predicted position: " + positions[predicted_index] + ", Actual position: " + positions[actual_index])
+    #print("Predicted position: " + positions[predicted_index] + ", Actual position: " + positions[actual_index])
     print("Predicted section: " + sections[predicted_index] + ", Actual section: " + sections[actual_index])
 '''
