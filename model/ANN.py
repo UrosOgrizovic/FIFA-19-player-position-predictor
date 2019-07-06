@@ -52,7 +52,9 @@ def train_NN(model, x_train, y_train, class_weights=None, num_of_epochs=None, ba
                   metrics=['accuracy'])  # what to track
 
     if class_weights is not None:
-        model.fit(x_train, y_train, epochs=num_of_epochs, batch_size=batch_size, class_weight=class_weights)  # train the model
+        model.fit(x_train, y_train, validation_split=0.2, epochs=num_of_epochs, batch_size=batch_size, class_weight=class_weights)  # train the model
     else:
-        model.fit(x_train, y_train, epochs=num_of_epochs, batch_size=batch_size)  # train the model
+        model.fit(x_train, y_train, validation_split=0.2, epochs=num_of_epochs, batch_size=batch_size)  # train the model
+
+#TODO: try RandomForest (sklearn lib, ensemble package)
 

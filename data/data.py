@@ -43,6 +43,12 @@ def make_players(data):
     return players
 
 def populate_positions(df, positions_set):
+    """
+    adds ST/CB/LM/... to position set
+    :param df:
+    :param positions_set:
+    :return:
+    """
     for i in range(len(df["Position"])):
         positions_set.append(positions.index(df["Position"].iloc[i]))
 
@@ -66,6 +72,12 @@ def populate_positions(df, positions_set):
 # Although the number of players by section is also unbalanced,
 # it is less so unbalanced than the number of players by position
 def populate_sections(df, sections):
+    """
+    adds ATT/MID/DEF/GK to sections
+    :param df:
+    :param sections:
+    :return:
+    """
     for i in range(len(df["Position"])):
         if df["Position"].iloc[i] in attacking_positions:
             sections.append(0)
@@ -77,6 +89,13 @@ def populate_sections(df, sections):
             sections.append(3)
 
 def display_predictions(predictions, test_set, position_or_section):
+    """
+    displays predicted position/section vs actual position/section for each player from predictions
+    :param predictions:
+    :param test_set:
+    :param position_or_section:
+    :return:
+    """
     for i in range(len(predictions)):
         predicted_index = np.argmax(predictions[i])
         actual_index = np.argmax(test_set[i])
@@ -84,3 +103,4 @@ def display_predictions(predictions, test_set, position_or_section):
             print("Predicted position: " + positions[predicted_index] + ", Actual position: " + positions[actual_index])
         else:
             print("Predicted section: " + sections[predicted_index] + ", Actual section: " + sections[actual_index])
+
