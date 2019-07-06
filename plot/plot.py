@@ -5,9 +5,6 @@ import globals as GLOBALS
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
 
-
-
-
 def plot_number_of_players_by_position(players):
     sns.set(style="darkgrid")
 

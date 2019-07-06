@@ -21,6 +21,7 @@ from sklearn.preprocessing import StandardScaler
 import model.ANN as ANN
 import data.data as DATA
 import plot.plot as PLOT
+import model.Random_Forest as RF
 
 # number of positions = 27
 positions = ["LS", "ST", "RS", "LW", "LF", "CF", "RF", "RW", "LAM",
@@ -78,17 +79,37 @@ def main():
 
     ###
 
-    model_positions = ANN.make_NN(x_train, 27)
-    model_sections = ANN.make_NN(x_train, 4)
+    # do_ANN(x_train, sections_train, x_test, sections_test, "Section")
+    do_random_forest(x_train, sections_train, x_test, sections_test, "Section")
 
-    train_model(model_positions, x_train, positions_train, 10, 100, "Position")
-    train_model(model_sections, x_train, sections_train, 10, 100, "Section")
+def do_ANN(x_train, y_train, x_test, y_test, position_or_section):
+    if position_or_section.upper() == "POSITION":
+        model = ANN.make_NN(x_train, 27)
+    elif position_or_section.upper() == "SECTION":
+        model = ANN.make_NN(x_train, 4)
+    else:
+        raise ValueError("Invalid value for position_or_section parameter")
 
-    predictions_positions = model_positions.predict(x_test)
-    predictions_sections = model_sections.predict(x_test)
+    predictions = model.predict(x_test)
+    # tried number of epochs: 10, 100, 100 - none of them gave an accuracy of over 89%
+    # tried batch sizes: 10, 20, 50, 100, 200, 500 - none of them gave an accuracy of over 89%
+    train_model(model, x_train, y_train, 100, 100, position_or_section)
+    # DATA.display_predictions(predictions, y_test, position_or_section)
 
-    # DATA.display_predictions(predictions_positions, positions_test, "POSITION")
-    # DATA.display_predictions(predictions_sections, sections_test, "SECTION")
+
+def do_random_forest(x_train, y_train, x_test, y_test, position_or_section):
+    rf_model = RF.random_forest()
+    rf_model.fit(x_train, y_train)
+    print("-" * 50 + " Random forest " + "-" * 50)
+    print("Train set accuracy: ", rf_model.score(x_train, y_train))
+    # the score could be inaccurate, as the model might just be overfitting
+    # that is why the out-of-bag score is used
+    print("Train set out-of-bag accuracy: ", rf_model.oob_score_)
+    print("Test set accuracy: ", rf_model.score(x_test, y_test))
+    rf_predictions = rf_model.predict(x_test)
+    # DATA.display_predictions(rf_predictions, y_test, position_or_section)
+    print("-" * 100)
+
 
 def train_model(model, x_train, y_train, num_of_epochs, batch_size, position_or_section):
     class_weights = None

@@ -3,7 +3,6 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.keras as keras
-import seaborn as sns
 from tensorflow.keras.layers import Dense, BatchNormalization, Activation, Dropout
 from sklearn.ensemble import RandomForestClassifier
 
@@ -48,6 +47,4 @@ def train_NN(model, x_train, y_train, class_weights=None, num_of_epochs=None, ba
     else:
         model.fit(x_train, y_train, validation_split=0.2, epochs=num_of_epochs, batch_size=batch_size)  # train the model
 
-# TODO: try RandomForest (sklearn lib, ensemble package)
-def random_forest():
-    pass
+
