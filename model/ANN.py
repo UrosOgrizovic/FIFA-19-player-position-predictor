@@ -4,16 +4,8 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.keras as keras
 import seaborn as sns
-
-# Input data files are available in the "../input/" directory.
-# For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory
-
-
-import os
 from tensorflow.keras.layers import Dense, BatchNormalization, Activation, Dropout
-from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
-from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
 
 def make_NN(x_train, num_of_output_neurons):
     model = keras.models.Sequential()
@@ -56,5 +48,6 @@ def train_NN(model, x_train, y_train, class_weights=None, num_of_epochs=None, ba
     else:
         model.fit(x_train, y_train, validation_split=0.2, epochs=num_of_epochs, batch_size=batch_size)  # train the model
 
-#TODO: try RandomForest (sklearn lib, ensemble package)
-
+# TODO: try RandomForest (sklearn lib, ensemble package)
+def random_forest():
+    pass

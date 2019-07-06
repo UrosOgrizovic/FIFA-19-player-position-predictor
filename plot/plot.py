@@ -1,12 +1,10 @@
 import seaborn as sns
+import numpy as np
 import matplotlib.pyplot as plt
 import globals as GLOBALS
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
-# plot x_train using plt
-# plt.style.use('ggplot')
-# ax = sns.distplot(x_train[:][0], bins = 52, kde = False, color = 'r')
-# plt.show()
+
 
 
 
@@ -14,10 +12,11 @@ def plot_number_of_players_by_position(players):
     sns.set(style="darkgrid")
 
     plot = sns.countplot(x="Position", data=players, order=players["Position"].value_counts().index)
+
     figure = plot.get_figure()
 
     figure.set_size_inches(12.8, 7.2)
-    figure.savefig("players_by_position.png")
+    figure.savefig("plot/players_by_position.png")
     plt.show()
 
 
@@ -42,11 +41,40 @@ def plot_number_of_players_by_section(players):
     plot = sns.barplot(x="Section", y="Number of players", data=df)
     figure = plot.get_figure()
     figure.set_size_inches(12.8, 7.2)
-    figure.savefig("players_by_section.png")
+    figure.savefig("plot/players_by_section.png")
     plt.show()
 
-def plot_correlation_matrix():
-    pass
+def plot_correlation_matrix(players):
+    """
+    1. plots correlation matrix, to see which values can be removed
+    2. saves correlation matrix to "correlation_matrix.png"
+    :param players:
+    :return:
+    """
+    # Compute the correlation matrix
+    corr = players.corr()
 
-def plot_some_attributes(players):
-    pass
+    # Generate a mask for the upper triangle
+    mask = np.zeros_like(corr)
+    mask[np.triu_indices_from(mask)] = True
+
+    # Set up the matplotlib figure
+    figure, ax = plt.subplots(figsize=(12.8, 7.2))
+
+    # Generate a custom diverging colormap
+    cmap = sns.diverging_palette(220, 10, as_cmap=True)
+
+    # Draw the heatmap with the mask and correct aspect ratio
+    sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,
+                square=True, linewidths=.5, cbar_kws={"shrink": .5})
+    figure.savefig("plot/" + "correlation_matrix.png")
+    plt.show()
+
+def plot_some_attributes(players, attribute_name):
+    # plot x_train using plt
+    plt.style.use('ggplot')
+    plot = sns.distplot(players[attribute_name])
+    figure = plot.get_figure()
+    figure.set_size_inches(12.8, 7.2)
+    figure.savefig("plot/" + attribute_name.lower() + ".png")
+    plt.show()

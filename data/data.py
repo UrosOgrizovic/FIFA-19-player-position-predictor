@@ -14,14 +14,16 @@ defensive_positions = ["LWB", "RWB", "LB", "LCB", "CB", "RCB", "RB"]
 def read_data():
     return pd.read_csv('data/data.csv')
 
-def make_players(data):
+def make_players(data, what_to_replace_null_data_with):
     """
     1. feature selection
     2. replacing null values
+
     :param data:
+    :param what_to_replace_null_data_with: accepted values: "1", "mean", "median"
     :return: players
     """
-    players = data[["Position", "Skill Moves", "Crossing", "Finishing",
+    players = data[["Overall", "Potential", "Position", "Skill Moves", "Crossing", "Finishing",
                     "HeadingAccuracy", "ShortPassing", "Volleys",
                     "Dribbling", "Curve", "FKAccuracy", "LongPassing", "BallControl",
                     "Acceleration", "SprintSpeed", "Agility", "Reactions",
@@ -31,11 +33,18 @@ def make_players(data):
                     "StandingTackle", "SlidingTackle",
                     "GKDiving", "GKHandling", "GKKicking", "GKPositioning",
                     "GKReflexes"]]
-    #TODO: try replacing null values with mean/median instead
 
     for col in players:
         if col != "Position":
-            players[col].fillna(1, inplace=True)
+            if what_to_replace_null_data_with == "1":
+                players[col].fillna(1, inplace=True)
+            elif what_to_replace_null_data_with == "mean":
+                players[col].fillna(players[col].mean(), inplace=True)
+            elif what_to_replace_null_data_with == "median":
+                players[col].fillna(players[col].median(), inplace=True)
+            else:
+                raise ValueError("Invalid value for second parameter")
+
 
     # drop 60 NA positions from dataframe
     players = players.dropna()

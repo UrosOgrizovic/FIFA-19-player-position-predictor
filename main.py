@@ -35,10 +35,14 @@ defensive_positions = ["LWB", "RWB", "LB", "LCB", "CB", "RCB", "RB"]
 
 def main():
     data = DATA.read_data()
-    players = DATA.make_players(data)
+
+    #PLOT.plot_correlation_matrix(data)
+    players = DATA.make_players(data, "1")
 
     # PLOT.plot_number_of_players_by_position(players)
     # PLOT.plot_number_of_players_by_section(players)
+    # PLOT.plot_some_attributes(players, "ShotPower")
+
 
     # randomly splitting data into train/test sets in 80/20 ratio
     x_train, x_test = train_test_split(players, test_size=0.2)
@@ -73,7 +77,7 @@ def main():
     x_test = keras.utils.normalize(x_test.values, axis=1)
 
     ###
-'''
+
     model_positions = ANN.make_NN(x_train, 27)
     model_sections = ANN.make_NN(x_train, 4)
 
@@ -83,9 +87,9 @@ def main():
     predictions_positions = model_positions.predict(x_test)
     predictions_sections = model_sections.predict(x_test)
 
-    DATA.display_predictions(predictions_positions, positions_test, "POSITION")
-    DATA.display_predictions(predictions_sections, sections_test, "SECTION")
-'''
+    # DATA.display_predictions(predictions_positions, positions_test, "POSITION")
+    # DATA.display_predictions(predictions_sections, sections_test, "SECTION")
+
 def train_model(model, x_train, y_train, num_of_epochs, batch_size, position_or_section):
     class_weights = None
     if position_or_section.upper() == "POSITION":
