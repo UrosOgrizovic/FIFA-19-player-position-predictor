@@ -79,8 +79,8 @@ def main():
 
     ###
 
-    # do_ANN(x_train, sections_train, x_test, sections_test, "Section")
-    do_random_forest(x_train, sections_train, x_test, sections_test, "Section")
+    do_ANN(x_train, sections_train, x_test, sections_test, "Section")
+    # do_random_forest(x_train, sections_train, x_test, sections_test, "Section")
 
 def do_ANN(x_train, y_train, x_test, y_test, position_or_section):
     if position_or_section.upper() == "POSITION":
@@ -90,11 +90,13 @@ def do_ANN(x_train, y_train, x_test, y_test, position_or_section):
     else:
         raise ValueError("Invalid value for position_or_section parameter")
 
-    predictions = model.predict(x_test)
-    # tried number of epochs: 10, 100, 100 - none of them gave an accuracy of over 89%
+    # tried number of epochs: 10, 100, 1000 - none of them gave an accuracy of over 89%
     # tried batch sizes: 10, 20, 50, 100, 200, 500 - none of them gave an accuracy of over 89%
-    train_model(model, x_train, y_train, 100, 100, position_or_section)
-    # DATA.display_predictions(predictions, y_test, position_or_section)
+    train_model(model, x_train, y_train, 10, 100, position_or_section)
+
+    predictions = model.predict(x_test)
+
+    DATA.display_predictions(predictions, y_test, position_or_section)
 
 
 def do_random_forest(x_train, y_train, x_test, y_test, position_or_section):
@@ -107,7 +109,7 @@ def do_random_forest(x_train, y_train, x_test, y_test, position_or_section):
     print("Train set out-of-bag accuracy: ", rf_model.oob_score_)
     print("Test set accuracy: ", rf_model.score(x_test, y_test))
     rf_predictions = rf_model.predict(x_test)
-    # DATA.display_predictions(rf_predictions, y_test, position_or_section)
+    DATA.display_predictions(rf_predictions, y_test, position_or_section)
     print("-" * 100)
 
 
@@ -117,7 +119,7 @@ def train_model(model, x_train, y_train, num_of_epochs, batch_size, position_or_
         position_or_section = "Position"
     else:
         position_or_section = "Section"
-        class_weights = {0: 1., 1: 2, 2: 2, 3: 1.}
+        class_weights = {0: 1., 1: 2., 2: 2., 3: 1.}
     dashes = "-"*50
     print(dashes + " " + position_or_section + " model training " + dashes)
     ANN.train_NN(model, x_train, y_train, class_weights, num_of_epochs, batch_size)
