@@ -80,7 +80,9 @@ def main():
     ###
 
     do_ANN(x_train, sections_train, x_test, sections_test, "Section")
+    # do_ANN(x_train, positions_train, x_test, positions_test, "Position")
     # do_random_forest(x_train, sections_train, x_test, sections_test, "Section")
+    # do_random_forest(x_train, positions_train, x_test, positions_test, "Position")
 
 def do_ANN(x_train, y_train, x_test, y_test, position_or_section):
     if position_or_section.upper() == "POSITION":
@@ -94,9 +96,11 @@ def do_ANN(x_train, y_train, x_test, y_test, position_or_section):
     # tried batch sizes: 10, 20, 50, 100, 200, 500 - none of them gave an accuracy of over 89%
     train_model(model, x_train, y_train, 10, 100, position_or_section)
 
+    print("Test set evaluation: ", model.evaluate(x_test, y_test, batch_size=100))
     predictions = model.predict(x_test)
 
-    DATA.display_predictions(predictions, y_test, position_or_section)
+
+    # DATA.display_predictions(predictions, y_test, position_or_section)
 
 
 def do_random_forest(x_train, y_train, x_test, y_test, position_or_section):
@@ -109,7 +113,7 @@ def do_random_forest(x_train, y_train, x_test, y_test, position_or_section):
     print("Train set out-of-bag accuracy: ", rf_model.oob_score_)
     print("Test set accuracy: ", rf_model.score(x_test, y_test))
     rf_predictions = rf_model.predict(x_test)
-    DATA.display_predictions(rf_predictions, y_test, position_or_section)
+    # DATA.display_predictions(rf_predictions, y_test, position_or_section)
     print("-" * 100)
 
 
