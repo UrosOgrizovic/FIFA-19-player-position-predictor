@@ -1,6 +1,6 @@
 # FIFA-19-player-position-predictor
-Projekat iz predmeta ORI, FTN SIIT 2019
+AI 101 project, SIIT, FTN, 2019
 
 SW-39/2016, Uroš Ogrizović
 
-Tehnologije: Keras, Python
+Technologies used: Keras, Python
