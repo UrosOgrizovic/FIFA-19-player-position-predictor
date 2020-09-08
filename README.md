@@ -13,8 +13,10 @@ The goal is to predict the position of a player in the video game FIFA 19 based 
 
 Total number of players: 14517.
 
-![Players by position](https://github.com/UrosOgrizovic/FIFA-19-player-position-predictor/blob/master/plot/players_by_position.png)
-![Players by section](https://github.com/UrosOgrizovic/FIFA-19-player-position-predictor/blob/master/plot/players_by_section.png)
+<img src="https://github.com/UrosOgrizovic/FIFA-19-player-position-predictor/blob/master/plot/players_by_position.png" width="80%" />
+<img src="https://github.com/UrosOgrizovic/FIFA-19-player-position-predictor/blob/master/plot/players_by_section.png" width="80%" />
+
+
 
 
 # Models
